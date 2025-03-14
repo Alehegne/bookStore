@@ -1,28 +1,25 @@
-import express, { Request, Response } from "express";
-import cors from "cors"
+import dotenv from 'dotenv'
+import express from "express";
+import {bookRouter} from "./routes/books.route";
+import connectToMongo from './lib/mongoConnection';
+import corsConfig from './lib/cors';
 
+
+//env config
+dotenv.config()
+// Create Express Server
 const app = express();
-const PORT = 5000;
-
+const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+//cors
+corsConfig(app);
+// Connect to MongoDB
+connectToMongo();
+//use routes
+app.use("/api/books", bookRouter);
 
-const corsConfig =  {
-    origin:"http://localhost:3000",
-    methods:['GET','POST','PUT','PATCH','DELETE'],
-    allowedHeaders:["Content-type","Authorization"],
-    credentials:true
-    
-}
-app.use(cors(
-   corsConfig
-))
-
-
-// Routes
-app.get("/", (req: Request, res: Response) => {
-    res.send("Hello, TypeScript with Express!");
-});
 
 // Start Server
 app.listen(PORT, () => {

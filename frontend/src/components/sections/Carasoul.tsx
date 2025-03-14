@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,11 +9,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 // Import required modules
-import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import { Navigation, Mousewheel, Keyboard } from "swiper/modules";
 import { book } from "@/types/dummytypes";
 import Image from "next/image";
-import Button from "../shared/button";
-import { Heart, ShoppingCart } from "lucide-react";
+import { ArrowUpRight, Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface CarasoulProps {
   type: string;
@@ -26,22 +26,25 @@ interface CarasoulProps {
   className?: string;
   loop?: boolean;
   onClick: () => void;
+  favorite: (book: book) => void;
+  cart: (book: book) => void;
 }
 
 const Carasoul: React.FC<CarasoulProps> = ({
   slides,
   type,
   spaceBetween,
+  favorite,
+  cart,
 
   navigation = true,
-  pagination = true,
   mousewheel = true,
   keyboard = true,
-  loop = false,
   className,
-  onClick,
 }) => {
   const [sliderPerView, setSliderPerView] = React.useState(1);
+  const router = useRouter();
+  const [loading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,16 +72,20 @@ const Carasoul: React.FC<CarasoulProps> = ({
     };
   }, []);
 
+  const detailsPage = (id: number | string) => {
+    setIsLoading(true);
+    router.push(`/books/details/${id}`);
+  };
+
   console.log("sliderPerView", sliderPerView);
 
   return (
     <div className="relative w-full ">
       <Swiper
         navigation={navigation}
-        pagination={pagination}
         mousewheel={mousewheel}
         spaceBetween={spaceBetween}
-        loop={loop}
+        loop={false}
         keyboard={keyboard}
         slidesPerView={
           type === "mobile"
@@ -87,14 +94,14 @@ const Carasoul: React.FC<CarasoulProps> = ({
             ? 2
             : sliderPerView
         }
-        modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+        modules={[Navigation, Mousewheel, Keyboard]}
         className={`mySwiper ${className}`}
       >
-        {slides.map((slide, index) => {
+        {slides.map((slide: book, index) => {
           return (
             <SwiperSlide key={index}>
               <div
-                className={`bg-gray-100 h-[250px] flex items-center rounded-md justify-center  px-2 py-2 gap-2 ${
+                className={`bg-gray-100 h-[250px] relative flex items-center rounded-md justify-center  px-2 py-2 gap-2 ${
                   type == "news" && "gap-12"
                 } text-black text-xl`}
               >
@@ -119,15 +126,11 @@ const Carasoul: React.FC<CarasoulProps> = ({
                           ${slide?.price || 100}
                         </p>
                       </div>
-                      {/* <Button
-                        onclick={onClick}
-                        icon={ShoppingCart}
-                        className="hidden sm:flex items-center justify-center w-fit"
-                      /> */}
+
                       <div className="flex gap-4 mt-4">
                         <div
-                          onClick={onClick}
-                          className=" w-14 h-14 bg-white relative rounded-full ring-1 ring-offset-2 ring-gray-500 flex items-center justify-center"
+                          onClick={() => cart(slide)}
+                          className=" w-8 h-8 bg-white relative rounded-full ring-1 ring-offset-2 ring-gray-500 flex items-center justify-center"
                         >
                           <Image
                             src="/assets/cart.png"
@@ -137,8 +140,8 @@ const Carasoul: React.FC<CarasoulProps> = ({
                           />
                         </div>
                         <div
-                          onClick={onClick}
-                          className=" w-14 h-14 bg-white relative rounded-full ring-1 ring-offset-2 ring-gray-500 flex items-center justify-center"
+                          onClick={() => favorite(slide)}
+                          className="hover:scale-105 active:scale-100 transition-all w-8 h-8 bg-white relative rounded-full ring-1 ring-offset-2 ring-gray-500 flex items-center justify-center"
                         >
                           <Heart size={40} fill="gray" stroke="gray" />
                         </div>
@@ -146,7 +149,10 @@ const Carasoul: React.FC<CarasoulProps> = ({
                     </div>
                   )}
                 </div>
-                <div className="relative">
+                <div
+                  className="relative cursor-pointer hover:scale-105 transition-all active:scale-100"
+                  onClick={() => detailsPage(slide.id)}
+                >
                   <Image
                     src={slide.image}
                     alt={slide.title}
@@ -154,6 +160,17 @@ const Carasoul: React.FC<CarasoulProps> = ({
                     height={`${type == "news" ? 180 : 250}`}
                     className="rounded-md"
                   />
+                </div>
+                <div
+                  onClick={() => detailsPage(slide.id)}
+                  className="absolute  -bottom-4 right-1  group flex justify-center items-center cursor-pointer w-14 h-14 bg-transparent"
+                >
+                  <div className=" group-hover:bg-gray-500  transition-all flex justify-center items-center bg-white w-7 h-7 rounded-full p-1">
+                    <ArrowUpRight
+                      size={40}
+                      className="group-hover:scale-150 group-active:scale-100 transition-all"
+                    />
+                  </div>
                 </div>
               </div>
             </SwiperSlide>

@@ -9,9 +9,9 @@ import Carasoul from "./Carasoul";
 const HeroSections = () => {
   return (
     <div className="w-full  px-0 sm:px-4  pt-[120px] sm:pt-[0px] ">
-      <div className="customContainer py-4 sm:py-20">
-        <div className="hidden sm:flex justify-between items-center flex-col sm:flex-row">
-          <div className="flex flex-col gap-4 w-1/3 text-wrap">
+      <div className="customContainer py-4 sm:py-20 mt-8">
+        <div className="flex flex-col-reverse relative  justify-between items-center gap-8 md:gap-4  md:flex-row">
+          <div className="flex flex-col gap-4 w-full md:w-1/2 text-wrap">
             <h1 className="h1">New Releases This Week</h1>
             <p className="pmedium line-clamp-6">
               It's time to update your reading list with some of the latest and
@@ -25,20 +25,21 @@ const HeroSections = () => {
               onclick={() => {}}
             />
           </div>
-          <div className="flex-1 overflow-hidden relative w-full h-[400px] sm:h-[500px]">
+          <div className=" w-full shadow-sm bg-gradient-to-r from-slate-300 to-slate-500  rounded-xl relative md:w-1/2 sm:justify-end h-[250px] sm:h-[300px] md:h-[400px] ">
             <Image
               src="/assets/banner.png"
               alt="banner"
               layout="fill"
-              objectFit="contain"
-              className="object-contain"
+              objectFit="cover"
+              className="rounded-xl flex-1 w-full right-0 left-0"
             />
           </div>
-          <div></div>
         </div>
         {/* mobile hero */}
         <div className="px-2 block sm:hidden">
           <Carasoul
+            favorite={() => {}}
+            cart={() => {}}
             slides={BookSlides.slice(0, 6)}
             type="mobile"
             spaceBetween={10}

@@ -9,6 +9,8 @@ const News = () => {
       <div className="flex flex-col gap-6">
         <h1 className="h1">News</h1>
         <Carasoul
+          cart={() => {}}
+          favorite={() => {}}
           type="news"
           slides={BookSlides.slice(0, 10)}
           navigation={true}
