@@ -1,10 +1,10 @@
-import { book } from '@/types/dummytypes';
+import {  serializedBook } from '@/types/dummytypes';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import Swal from 'sweetalert2'
 
 export interface CartState {
-    cartItems: book[];
+    cartItems: serializedBook[];
 
 }
 
@@ -17,15 +17,19 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state,action:PayloadAction<book>)=>{
+    addToCart: (state,action:PayloadAction<serializedBook>)=>{
 
         const existingItem = state.cartItems.find((item)=>{
-           return  item.id === action.payload.id
+           return  item._id === action.payload._id
         });
         console.log("existing item",existingItem);
+        console.log("now action payload",action.payload);
         const itemTitle = action.payload.title;
+        
         if(!existingItem){
-            state.cartItems.push(action.payload);
+            state.cartItems.push(
+                action.payload
+            );
             Swal.fire({
               position: "top-end",
               icon: "success",
@@ -59,7 +63,7 @@ const cartSlice = createSlice({
         }
     },
     removeFromCart:(state,action:PayloadAction<{id:string | number}>)=>{
-      state.cartItems = state.cartItems.filter((item)=>item.id !==action.payload.id)
+      state.cartItems = state.cartItems.filter((item)=>item._id !==action.payload.id)
     },
     clearCart:(state)=>{
       state.cartItems = []

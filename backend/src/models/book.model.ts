@@ -9,9 +9,10 @@ export interface BookProps{
     release:string;
     genre:string;
     pages:number ;
-    category:string;
+    
     newPrice:number;
     oldPrice:number;
+    publishedAt:Date;
     createdAt:Date;
     updatedAt:Date;
     _id:string;
@@ -25,9 +26,11 @@ const Book = new mongoose.Schema({
     description:{
         type:String
     },
-    category:{
-        type:String
+    publishedAt:{
+        type:Date,
+        default:Date.now
     },
+  
     coverImage:{
         type:String,
         required:true
@@ -66,6 +69,5 @@ const Book = new mongoose.Schema({
   },{
     timestamps:true
   });
-
 
 export default mongoose.model<BookProps>('Book',Book);

@@ -14,10 +14,11 @@ import { book } from "@/types/dummytypes";
 import Image from "next/image";
 import { ArrowUpRight, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface CarasoulProps {
   type: string;
-  slides: book[];
+  slides?: book[];
   spaceBetween?: number;
   navigation?: boolean;
   pagination?: boolean;
@@ -28,27 +29,49 @@ interface CarasoulProps {
   onClick: () => void;
   favorite: (book: book) => void;
   cart: (book: book) => void;
+  isLoading?: boolean;
+  isError?: boolean;
 }
 
 const Carasoul: React.FC<CarasoulProps> = ({
   slides,
   type,
+  isLoading,
+  isError,
   spaceBetween,
   favorite,
   cart,
-
   navigation = true,
   mousewheel = true,
   keyboard = true,
   className,
 }) => {
-  const [sliderPerView, setSliderPerView] = React.useState(1);
+  const [sliderPerView, setSliderPerView] = useState<number | undefined>(
+    undefined
+  );
   const router = useRouter();
-  const [loading, setIsLoading] = useState<boolean>(false);
-
+  console.log("fetched slides", slides);
   useEffect(() => {
+    const innerWidth = window.innerWidth;
+
+    switch (true) {
+      case innerWidth > 1024:
+        setSliderPerView(4);
+        break;
+      case innerWidth > 768:
+        setSliderPerView(3);
+        break;
+      case innerWidth > 640:
+        setSliderPerView(2);
+        break;
+      default:
+        setSliderPerView(1);
+        break;
+    }
+
     const handleResize = () => {
       const width = window.innerWidth;
+      console.log("width", width);
       switch (true) {
         case width > 1024:
           setSliderPerView(4);
@@ -73,13 +96,11 @@ const Carasoul: React.FC<CarasoulProps> = ({
   }, []);
 
   const detailsPage = (id: number | string) => {
-    setIsLoading(true);
     router.push(`/books/details/${id}`);
   };
 
-  console.log("sliderPerView", sliderPerView);
-
-  return (
+  // show the slides if the slides are fetched and not loading
+  return slides && sliderPerView && !isError && !isLoading ? (
     <div className="relative w-full ">
       <Swiper
         navigation={navigation}
@@ -121,10 +142,14 @@ const Carasoul: React.FC<CarasoulProps> = ({
                   {type !== "mobile" && type !== "news" && (
                     <div>
                       <div className="flex gap-4">
-                        <p className="font-semibold">${slide?.price || 10}</p>
-                        <p className="line-through font-semibold ">
-                          ${slide?.price || 100}
+                        <p className="font-semibold">
+                          ${slide?.newPrice.toFixed(2) || "Free"}
                         </p>
+                        {slide.oldPrice && (
+                          <p className="line-through font-semibold ">
+                            ${slide?.oldPrice.toFixed(2)}
+                          </p>
+                        )}
                       </div>
 
                       <div className="flex gap-4 mt-4">
@@ -151,10 +176,10 @@ const Carasoul: React.FC<CarasoulProps> = ({
                 </div>
                 <div
                   className="relative cursor-pointer hover:scale-105 transition-all active:scale-100"
-                  onClick={() => detailsPage(slide.id)}
+                  onClick={() => detailsPage(slide._id)}
                 >
                   <Image
-                    src={slide.image}
+                    src={slide.coverImage}
                     alt={slide.title}
                     width={`${type == "mobile" ? 180 : 200}`}
                     height={`${type == "news" ? 180 : 250}`}
@@ -162,7 +187,7 @@ const Carasoul: React.FC<CarasoulProps> = ({
                   />
                 </div>
                 <div
-                  onClick={() => detailsPage(slide.id)}
+                  onClick={() => detailsPage(slide._id)}
                   className="absolute  -bottom-4 right-1  group flex justify-center items-center cursor-pointer w-14 h-14 bg-transparent"
                 >
                   <div className=" group-hover:bg-gray-500  transition-all flex justify-center items-center bg-white w-7 h-7 rounded-full p-1">
@@ -178,6 +203,35 @@ const Carasoul: React.FC<CarasoulProps> = ({
         })}
       </Swiper>
     </div>
+  ) : (
+    <motion.div className="relative flex justify-center items-center bg-gray-200 h-[250px] w-full rounded-3xl overflow-hidden">
+      {/* Animated shimmer effect */}
+      <motion.div
+        initial={{ x: !isError ? "-100%" : "0%" }}
+        animate={{ x: !isError ? "100%" : "0%" }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"
+      />
+
+      {/* Text animation */}
+      <motion.h1
+        initial={{ opacity: !isError ? 0.5 : 1, scale: !isError ? 0.9 : 1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 50,
+          damping: 15,
+          duration: 1.2,
+          repeat: !isError ? Infinity : 0,
+          repeatType: "reverse",
+        }}
+        className="text-gray-500 text-lg font-semibold z-10"
+      >
+        {isError
+          ? `An Error occured While fetching ${type}`
+          : `loading ${type}...`}
+      </motion.h1>
+    </motion.div>
   );
 };
 

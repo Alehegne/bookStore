@@ -14,7 +14,9 @@ const Cart = () => {
   const router = useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const dispatch = useDispatch<AppDispatch>();
-  const total = cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+  const total = cartItems
+    .reduce((acc, item) => acc + item.newPrice, 0)
+    .toFixed(2);
 
   const handleRemove = (id: string | number) => {
     console.log("removing item fromcart", id);
@@ -52,7 +54,7 @@ const Cart = () => {
 
               {/* cart items */}
               {cartItems.map((item, index) => (
-                <AnimatePresence key={item.id}>
+                <AnimatePresence key={item._id}>
                   <motion.div
                     initial={{ opacity: 0.7, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -63,7 +65,7 @@ const Cart = () => {
                     <div className="flex gap-4">
                       <div className="relative h-[100px] w-[100px]">
                         <Image
-                          src={item.image}
+                          src={item.coverImage}
                           alt="productImage"
                           fill
                           className="rounded-md"
@@ -85,10 +87,10 @@ const Cart = () => {
 
                     <div className="flex flex-col justify-between items-end mr-4">
                       <p className="font-bold text-sm">
-                        ${item.price.toFixed(2)}
+                        ${item.newPrice.toFixed(2)}
                       </p>
                       <Button
-                        onClick={() => handleRemove(item.id)}
+                        onClick={() => handleRemove(item._id)}
                         variant="outline"
                         className="bg-transparent text-red-500 hover:border-2 hover:border-red-600 hover:scale-[1.01] active:scale-[1]"
                       >

@@ -33,7 +33,7 @@ const CheckOutPage = () => {
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
   const totalItems = cartItems.length;
-  const totalPrice = cartItems.reduce((acc, item) => (acc += item.price), 0);
+  const totalPrice = cartItems.reduce((acc, item) => (acc += item.newPrice), 0);
 
   const defaultValues = {
     password: "",
@@ -66,7 +66,7 @@ const CheckOutPage = () => {
         state: values.state,
         zip: values.zip,
       },
-      productIds: cartItems.map((item) => item?.id),
+      productIds: cartItems.map((item) => item?._id),
       totalPrice: totalPrice,
     };
 

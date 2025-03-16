@@ -11,20 +11,19 @@ import {
 import { ChevronDown } from "lucide-react";
 
 interface CustomDropDownProps {
+  currentItem: string;
+  setCurrentItem: React.Dispatch<React.SetStateAction<string>>;
   title: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onSelect: (item: any) => void;
 }
 
 const CustomDropDown: React.FC<CustomDropDownProps> = ({
   title,
   items,
-  onSelect,
+  currentItem,
+  setCurrentItem,
 }) => {
-  const [currentItem, setCurrentItem] = React.useState(title);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="bg-gray-200 mb-4  rounded-sm py-2 w-[200px] px-4">
@@ -48,7 +47,6 @@ const CustomDropDown: React.FC<CustomDropDownProps> = ({
             }`}
             onSelect={() => {
               setCurrentItem(item);
-              onSelect(item);
             }}
             key={index}
           >

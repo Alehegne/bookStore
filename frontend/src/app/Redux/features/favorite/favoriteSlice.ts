@@ -15,13 +15,13 @@ const favoriteSlice = createSlice({
     initialState,
     reducers:{
         addToFavorite:(state,action:PayloadAction<book>)=>{
-            const existingItem = state.favoriteItems.find((item)=>item.id === action.payload.id);
+            const existingItem = state.favoriteItems.find((item)=>item._id === action.payload._id);
             console.log("existing item",existingItem);
             if(!existingItem){
                 state.favoriteItems.push(action.payload);
                 alert("Item added to favorite");
             }else{
-                const index = state.favoriteItems.findIndex((item)=>item.id === action.payload.id);
+                const index = state.favoriteItems.findIndex((item)=>item._id === action.payload._id);
                 state.favoriteItems.splice(index,1);
                 alert("Item removed from favorite");
             }
