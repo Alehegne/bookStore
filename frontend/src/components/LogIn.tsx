@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
 
 const LogInShema = z.object({
   password: z
@@ -29,8 +30,9 @@ const RegisterSchema = LogInShema.extend({
     .max(50),
 });
 
-const LogIn = () => {
+const FormComponent = () => {
   const [option, setOption] = React.useState<"login" | "register">("login");
+  const router = useRouter();
 
   const formSchema = option === "login" ? LogInShema : RegisterSchema;
 
@@ -126,8 +128,11 @@ const LogIn = () => {
             <p className="pmedium">
               Don't have an account
               <span
-                onClick={() => setOption("register")}
-                className="ml-4 text-blue-600 text-[20px] hover:underline cursor-pointer"
+                onClick={() => {
+                  setOption("register");
+                  return router.push("/register");
+                }}
+                className="ml-4 text-blue-600 text-[14px] hover:underline cursor-pointer"
               >
                 Register
               </span>
@@ -136,8 +141,11 @@ const LogIn = () => {
             <p className="pmedium">
               Already have an account
               <span
-                className="ml-4 text-blue-600 hover:underline text-[20px] cursor-pointer"
-                onClick={() => setOption("login")}
+                className="ml-4 text-blue-600 hover:underline text-[14px] cursor-pointer"
+                onClick={() => {
+                  setOption("login");
+                  return router.push("/logIn");
+                }}
               >
                 Log in
               </span>
@@ -159,4 +167,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default FormComponent;

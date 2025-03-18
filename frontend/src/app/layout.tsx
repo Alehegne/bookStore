@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/sections/header";
-import InitProvider from "./Redux/ContextProvider/initialProvider";
+
 import "sweetalert2/dist/sweetalert2.js";
+import { AuthProvider } from "./context/AuthContext";
+import ReduxStateProvider from "./Redux/ContextProvider/Provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
-        <InitProvider>
-          {" "}
-          <NavBar />
-          {children}
-        </InitProvider>
+        <AuthProvider>
+          <ReduxStateProvider>
+            {" "}
+            <NavBar />
+            {children}
+          </ReduxStateProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { book } from "@/types/dummytypes";
+import { book } from "@/types/types";
 import { createContext, useState } from "react";
 
 interface WishListContextType {

@@ -25,7 +25,7 @@ const HeroSections = () => {
               onclick={() => {}}
             />
           </div>
-          <div className=" w-full shadow-sm bg-gradient-to-r from-slate-300 to-slate-500  rounded-xl relative md:w-1/2 sm:justify-end h-[250px] sm:h-[300px] md:h-[400px] ">
+          <div className=" w-full  rounded-xl relative md:w-1/2 sm:justify-end h-[250px] sm:h-[300px] md:h-[400px] ">
             <Image
               src="/assets/banner.png"
               alt="banner"

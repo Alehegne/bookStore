@@ -7,8 +7,8 @@ interface InitProps {
   children: React.ReactNode;
 }
 
-const InitProvider: React.FC<InitProps> = ({ children }) => {
+const ReduxStateProvider: React.FC<InitProps> = ({ children }) => {
   return <Provider store={store}>{children}</Provider>;
 };
 
-export default InitProvider;
+export default ReduxStateProvider;

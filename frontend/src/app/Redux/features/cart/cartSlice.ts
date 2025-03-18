@@ -1,4 +1,4 @@
-import {  serializedBook } from '@/types/dummytypes';
+import {  serializedBook } from '@/types/types';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import Swal from 'sweetalert2'

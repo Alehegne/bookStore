@@ -1,3 +1,4 @@
+"use client";
 import Footer from "@/components/sections/Footer";
 import HeroSections from "@/components/sections/HeroSections";
 import News from "@/components/sections/News";

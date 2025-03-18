@@ -1,4 +1,4 @@
-import { book } from "@/types/dummytypes";
+import { book } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 

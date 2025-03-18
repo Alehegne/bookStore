@@ -6,7 +6,7 @@ export type book = {
     author: string;
     rating: number;
     release: string;
-    genre: string;
+    genre: string[];
     pages: number;
     newPrice: number;
     oldPrice:number;
@@ -22,7 +22,7 @@ export type book = {
       author: string;
       rating: number;
       release: string;
-      genre: string;
+      genre: string[];
       pages: number;
       newPrice: number;
       oldPrice:number;
@@ -30,3 +30,16 @@ export type book = {
       updatedAt:string;
       publishedAt:string
     };
+  
+
+    export type Statistics = {
+      message:string;
+      statistics:{
+        genres:(string | number)[];
+        totalBooks:number;
+        authors:(string | number)[];
+        monsPopularGenre?:string;
+        averageRating?:number;
+      }
+
+    }

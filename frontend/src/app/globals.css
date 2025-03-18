@@ -39,7 +39,22 @@
 
 
 .swiper-button-prev:after, .swiper-button-next:after{
-  font-size: 16px !important;
+  font-size: 20px !important;
+  background-color: white !important;
+  
+  color: black !important;
+  border-radius: 50% !important;
+  padding: 5px !important;
+ 
+  border:1px solid gray !important;
+ z-index: 999 !important;
+ position: absolute !important;
+  top: 50% !important;
+  right: 0 !important;
+  transition: all 0.3s ease !important;
+  
+
+
 }
 
 
@@ -55,6 +70,9 @@
   }
   .h1{
     @apply text-3xl italic font-bold  opacity-75 leading-12
+  }
+  .h1bold{
+    @apply text-4xl font-bold  leading-16 opacity-85
   }
   .h2{
     @apply text-2xl font-semibold opacity-80 leading-8
