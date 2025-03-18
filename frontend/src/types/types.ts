@@ -43,3 +43,23 @@ export type book = {
       }
 
     }
+
+    export type Order={
+        name:string;
+        email:string;
+        phone:string;
+        address:{
+            address:string,
+            city:string,
+            country:string,
+            state:string,
+            zip:string
+        },
+        productIds:string[];
+        totalPrice:number;
+        createdAt?:Date;
+        updatedAt?:Date;
+        _id?:string;
+    
+
+    }

@@ -56,7 +56,7 @@ class BookController {
         }
         try {
             const books = await Book.find({
-                author:{$regex:name as string,$options:"i"}
+                author:name as string
             })
             if(books.length>0){
                 res.status(200).json({message:"Books fetched by author",books});
@@ -102,14 +102,12 @@ class BookController {
     static async topRatedBooks(req:Request,res:Response){
         
             console.log("top rated route hitted");
+            const {limit} = req.params;
+
             try {
-                const books = await Book.find().sort({rating:-1}).limit(10);
-                if(books.length>0){
+                const books = await Book.find().sort({rating:-1}).limit(parseInt(limit) || 10);
                     res.status(200).json({message:"Top rated books fetched successfully",books});
-                }
-                else{
-                    res.status(404).json({message:"No books found"});
-                }
+             
                 
             } catch (error) {
                 console.log(error);
@@ -144,6 +142,7 @@ class BookController {
                     if(!body){
                         res.status(400).json({message:"Invalid request"});
                     }
+                    console.log("body",req.body);
                    
                     const {
                         title,
@@ -173,14 +172,16 @@ class BookController {
                         newPrice,
                         oldPrice
                     }
+                    console.log("old price",oldPrice);
                     //validate the request
                     const validation:Record<string,any> = validatePosts(newBook);
                     if(validation.status===400){
                         res.status(400).json({message:validation.message});
                     }
-                
-                    const book = new Book(newBook,res);
-                    
+            
+                    const book = new Book(newBook);
+                                      
+            
                     book.save()
                          .then((book)=>{
                              res.status(201).json({message:"Book created successfully",book});
@@ -243,13 +244,19 @@ class BookController {
                      
 
                             const {category} = req.params;
-                            if(!category){
+                            //since category may be more than one ,  comma, we should get each keyword and search for books
+                            const categories = category.split(",");
+                            
+                            if(!categories){
                                 res.status(400).json({message:"Invalid request"});
                             }
+                          
+                           
                             try {
-                        
+                                //find books that have the genre in the categories array
                                 const books = await Book.find({
-                                    genre:category
+                                    genre:{$elemMatch:{$in:categories}}
+                                    
                                 })
                                 if(books.length>0){
                                     res.status(200).json({

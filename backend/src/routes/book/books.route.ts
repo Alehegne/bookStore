@@ -25,7 +25,7 @@ bookRouter.get("/author",BookController.getBooksByAuthor);
 //get book statistics
 bookRouter.get("/statistics",BookController.statistics);
 //get Top rated books //TODO: add pagination
-bookRouter.get("/topRated",BookController.topRatedBooks);
+bookRouter.get("/topRated/:limit",BookController.topRatedBooks);
 bookRouter.get("/:id",BookController.getBookById);
 bookRouter.post("/create",upload.none(),BookController.postBook);
 bookRouter.put("/update/:id",upload.none(),BookController.updateBook);

@@ -7,7 +7,7 @@ export interface BookProps{
     author:string;
     rating:number ;
     release:string;
-    genre:string;
+    genre:string[];
     pages:number ;
     
     newPrice:number;
@@ -41,11 +41,11 @@ const Book = new mongoose.Schema({
     rating:{
         type:Number 
     },
-    releaseDate:{
+    release:{
         type:String
     },
     genre:{
-        type:String
+        type:[String]
     },
     pages:{
         type:Number 

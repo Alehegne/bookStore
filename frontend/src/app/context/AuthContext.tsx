@@ -2,8 +2,10 @@
 import { auth } from "@/lib/firebase/firebase";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   User,
 } from "firebase/auth";
@@ -15,9 +17,11 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  googleLogin: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+//auth context expects authcontexttype
+const AuthContext = createContext<AuthContextType | undefined>(undefined); //authcontext will store authcontexttype
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -46,6 +50,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     await signOut(auth);
   };
+  const googleProvider = new GoogleAuthProvider();
+  const googleLogin = async () => {
+    //google login
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const value = {
     user,
@@ -53,6 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     register,
     logout,
+    googleLogin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

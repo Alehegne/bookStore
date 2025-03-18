@@ -3,17 +3,20 @@ import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from "../features/cart/cartSlice"
 import favoriteReducer from "../features/favorite/favoriteSlice";
 import { bookApi } from '../features/backendConnection/bookApi';
+import { orderApi } from '../features/backendConnection/orderApi';
 
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     [bookApi.reducerPath]: bookApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
+
     favorite:favoriteReducer,
     
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(bookApi.middleware),
+    getDefaultMiddleware().concat(bookApi.middleware,orderApi.middleware),
   // middleware:(getDefaultMiddleware)=>getDefaultMiddleware({
   //   serializableCheck:false
   // })

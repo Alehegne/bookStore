@@ -35,13 +35,16 @@ const TopSellers = () => {
     console.log("added to cart", book);
   };
 
+  //filtered by category
   useEffect(() => {
     if (currentItem === "All") {
       setFilteredBook(data || undefined);
     } else {
       setFilteredBook(() => {
-        const filtered = data?.filter(
-          (deta) => deta.genre.toLowerCase() === currentItem.toLowerCase()
+        const filtered = data?.filter((deta) =>
+          deta.genre.map(
+            (genre) => genre.toLowerCase() == currentItem.toLowerCase()
+          )
         );
         console.log("filtered", filtered);
         return filtered || undefined;

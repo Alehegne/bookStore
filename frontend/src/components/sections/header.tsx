@@ -11,12 +11,26 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/Redux/store/cart";
 import { useRouter } from "next/navigation";
+import { profileLinks } from "@/lib/links";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { useAuth } from "@/app/context/AuthContext";
+import { redirect } from "next/navigation";
 
 export default function NavBar() {
+  const { logout, user } = useAuth();
+
   const routes: RouteType[] = useRoutes();
   const [showSideBar, setShowSideBar] = useState(false);
   const [totalOrdered, settotalOrdered] = useState(0);
   const router = useRouter();
+  //log out
+  //current selected profile dropdown
 
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   console.log("cartItems in navbar", cartItems);
@@ -24,8 +38,15 @@ export default function NavBar() {
     settotalOrdered(cartItems.length);
   }, [cartItems.length]);
 
-  const userLoggedIn = false;
-
+  //google login
+  const handleLogOut = async () => {
+    try {
+      await logout();
+      redirect("/logIn");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {showSideBar && <SideBar setShowSideBar={setShowSideBar} />}
@@ -59,8 +80,10 @@ export default function NavBar() {
                   <Link
                     key={index}
                     href={
-                      route.label === "Profile" && !userLoggedIn
-                        ? "/login"
+                      route.label === "Profile" && !user
+                        ? "/logIn"
+                        : route.label === "Profile"
+                        ? ""
                         : route.link
                     }
                   >
@@ -71,14 +94,43 @@ export default function NavBar() {
                           "bg-sky-500 text-white stroke-3 p-2 rounded"
                       )}
                     >
-                      {route.label === "Profile" && userLoggedIn ? (
-                        <Image
-                          src="/assets/avatar.png"
-                          alt="profile image"
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
+                      {route.label === "Profile" && user ? (
+                        <>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Image
+                                src="/assets/avatar.png"
+                                alt="profile image"
+                                width={24}
+                                height={24}
+                                className="rounded-full"
+                              />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-gray-50 p-4 rounded-md shadow mt-4">
+                              <DropdownMenuSeparator />
+                              {profileLinks.map((item, index) => (
+                                <DropdownMenuItem
+                                  onSelect={() => router.push(item.link)}
+                                  key={index}
+                                  className="hover:bg-gray-100 p-2 rounded-sm"
+                                >
+                                  {item.name}
+                                </DropdownMenuItem>
+                              ))}
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={handleLogOut}>
+                                Log Out
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+
+                          {/* <CustomDropDown
+                            items={profileLinks}
+                            title="profile drop down"
+                            currentItem={currentItem}
+                            setCurrentItem={setCurrentItem}
+                          /> */}
+                        </>
                       ) : route.label === "Cart" ? (
                         <Button
                           variant="outline"
