@@ -4,6 +4,7 @@ import {bookRouter} from "./routes/book/books.route";
 import connectToMongo from './lib/mongoConnection';
 import corsConfig from './lib/cors';
 import { orderRouter } from './routes/order/orders.route';
+import { userRouter } from './routes/user/users.route';
 
 
 //env config
@@ -22,6 +23,7 @@ connectToMongo();
 //use routes
 app.use("/api/books/", bookRouter);
 app.use("/api/orders",orderRouter);
+app.use("/api/users",userRouter);
 
 // Start Server
 app.listen(PORT, () => {

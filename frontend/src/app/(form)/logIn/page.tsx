@@ -131,7 +131,7 @@ const Page = () => {
             onClick={handleGoogleLogin}
             variant="outline"
             type="button"
-            className="w-full hover:bg-gray-900 bg-gray-800 pmedium text-white"
+            className="w-full hover:bg-gray-900 hover:scale-[1.02] active:scale-100 bg-gray-800 pmedium text-white"
           >
             Log in with google
           </Button>

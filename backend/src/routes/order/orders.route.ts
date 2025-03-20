@@ -7,7 +7,7 @@ import orderController from "./order.controller";
 const upload = multer()
 const orderRouter = Router();
 //get order by email
-orderRouter.get("/:email",orderController.getOrders)
+orderRouter.get("/:email",orderController.getOrdersByEmail)
 orderRouter.post("/create",upload.none(),orderController.createOrder);
 
 

@@ -102,16 +102,17 @@ class BookController {
     static async topRatedBooks(req:Request,res:Response){
         
             console.log("top rated route hitted");
-            const {limit} = req.params;
+            const { limit } = req.query as { limit?: string };
+            console.log("limit",limit);
 
             try {
-                const books = await Book.find().sort({rating:-1}).limit(parseInt(limit) || 10);
+                const books = await Book.find().sort({rating:-1}).limit(limit ?parseInt(limit) : 10);
                     res.status(200).json({message:"Top rated books fetched successfully",books});
              
                 
             } catch (error) {
                 console.log(error);
-                res.status(500).json({message:"Internal server error",error:error});
+                res.status(500).json({message:"Internal server error while fetching top rated",error:error});
                 
             }
     }

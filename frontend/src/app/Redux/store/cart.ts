@@ -4,6 +4,7 @@ import cartReducer from "../features/cart/cartSlice"
 import favoriteReducer from "../features/favorite/favoriteSlice";
 import { bookApi } from '../features/backendConnection/bookApi';
 import { orderApi } from '../features/backendConnection/orderApi';
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '@/lib/utils';
 
 
 export const store = configureStore({
@@ -15,11 +16,20 @@ export const store = configureStore({
     favorite:favoriteReducer,
     
   },
+  preloadedState:{//to load the cart from local storage, before the app renders
+    cart:loadCartFromLocalStorage()
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(bookApi.middleware,orderApi.middleware),
   // middleware:(getDefaultMiddleware)=>getDefaultMiddleware({
   //   serializableCheck:false
   // })
+})
+
+store.subscribe(()=>{//set state to local storage,whenever the state changes
+  console.log("state changed");
+  console.log("state",store.getState());
+  saveCartToLocalStorage({cartItems:store.getState().cart.cartItems});
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

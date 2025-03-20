@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../Redux/store/cart";
 import { useDispatch } from "react-redux";
@@ -10,13 +10,21 @@ import { clearCart, removeFromCart } from "../Redux/features/cart/cartSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/shared/loading";
 const Cart = () => {
   const router = useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const dispatch = useDispatch<AppDispatch>();
-  const total = cartItems
-    .reduce((acc, item) => acc + item.newPrice, 0)
-    .toFixed(2);
+  const [isMounted, setIsMounted] = React.useState(false); //to avoid hydration error
+
+  const total = useMemo(() => {
+    return cartItems.reduce((acc, item) => acc + item.newPrice, 0).toFixed(2);
+  }, [cartItems]);
+
+  //to avoid hydration error
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleRemove = (id: string | number) => {
     console.log("removing item fromcart", id);
@@ -26,6 +34,9 @@ const Cart = () => {
     console.log("clearing cart");
     dispatch(clearCart());
   };
+  if (!isMounted) {
+    return <Loading message="Loading your cart" />;
+  }
 
   console.log("cartItems in cart", cartItems);
   return (

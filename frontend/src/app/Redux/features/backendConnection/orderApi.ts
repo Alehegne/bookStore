@@ -7,8 +7,8 @@ export const orderApi = createApi({
     tagTypes:["Order"],
     
     endpoints:(build)=>({
-        getOrders:build.query<Order[],void>({
-            query:()=>``,
+        getOrdersByEmail:build.query<Order,{email:string | null | undefined}>({
+            query:({email})=>`${email}`,
             providesTags:["Order"]
         }),
         postOrders:build.mutation<Order,{order:Order}>({
@@ -28,6 +28,6 @@ export const orderApi = createApi({
 })
 
 export const {
-    useGetOrdersQuery,
+    useGetOrdersByEmailQuery,
     usePostOrdersMutation
 } = orderApi;

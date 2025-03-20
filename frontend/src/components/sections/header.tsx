@@ -21,6 +21,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { useAuth } from "@/app/context/AuthContext";
 import { redirect } from "next/navigation";
+import { serializedBook } from "@/types/types";
 
 export default function NavBar() {
   const { logout, user } = useAuth();
@@ -32,7 +33,11 @@ export default function NavBar() {
   //log out
   //current selected profile dropdown
 
-  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const cartItems =
+    useSelector(
+      (state: RootState) => state.cart.cartItems as serializedBook[]
+    ) || [];
+
   console.log("cartItems in navbar", cartItems);
   useEffect(() => {
     settotalOrdered(cartItems.length);
@@ -76,76 +81,80 @@ export default function NavBar() {
             </Link>
             <Button onclick={() => {}} label="Basket" icon={ShoppingCart} /> */}
               {routes.map((route: RouteType, index: number) => {
-                return (
-                  <Link
-                    key={index}
-                    href={
-                      route.label === "Profile" && !user
-                        ? "/logIn"
-                        : route.label === "Profile"
-                        ? ""
-                        : route.link
-                    }
-                  >
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        route.active &&
-                          "bg-sky-500 text-white stroke-3 p-2 rounded"
-                      )}
-                    >
-                      {route.label === "Profile" && user ? (
-                        <>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Image
-                                src="/assets/avatar.png"
-                                alt="profile image"
-                                width={24}
-                                height={24}
-                                className="rounded-full"
-                              />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-gray-50 p-4 rounded-md shadow mt-4">
-                              <DropdownMenuSeparator />
-                              {profileLinks.map((item, index) => (
-                                <DropdownMenuItem
-                                  onSelect={() => router.push(item.link)}
-                                  key={index}
-                                  className="hover:bg-gray-100 p-2 rounded-sm"
+                if (route.label === "Profile" && user) {
+                  return (
+                    <div key={index}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Image
+                            src="/assets/avatar.png"
+                            alt="profile image"
+                            width={24}
+                            height={24}
+                            className="rounded-full"
+                          />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="bg-gray-50 p-4 rounded-md shadow mt-4">
+                          <DropdownMenuSeparator />
+                          <ul>
+                            {profileLinks.map((item, index) => (
+                              <DropdownMenuItem
+                                key={index}
+                                className="hover:bg-gray-100 p-2 text-left rounded-sm"
+                              >
+                                <Link
+                                  href={item.link}
+                                  className="w-full h-full text-left"
                                 >
                                   {item.name}
-                                </DropdownMenuItem>
-                              ))}
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem onClick={handleLogOut}>
-                                Log Out
+                                </Link>
                               </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-
-                          {/* <CustomDropDown
-                            items={profileLinks}
-                            title="profile drop down"
-                            currentItem={currentItem}
-                            setCurrentItem={setCurrentItem}
-                          /> */}
-                        </>
-                      ) : route.label === "Cart" ? (
-                        <Button
-                          variant="outline"
-                          className="bg-amber-300  hover:scale-105 active:scale-100 transition-all"
-                        >
-                          <span className="mx-1">{totalOrdered}</span>
-                          <ShoppingCart strokeWidth={1} size={38} />
-                        </Button>
-                      ) : (
-                        <route.icon strokeWidth={1} />
-                      )}
-                      <span className="sr-only">{route.label}</span>
+                            ))}
+                          </ul>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="py-2 px-2 rounded-2xl hover:bg-gray-100"
+                            onClick={handleLogOut}
+                          >
+                            Log Out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
-                  </Link>
-                );
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={index}
+                      href={
+                        route.label === "Profile" && !user
+                          ? "/logIn"
+                          : route.link
+                      }
+                    >
+                      <div
+                        className={clsx(
+                          "flex items-center gap-2",
+                          route.active &&
+                            "bg-sky-500 text-white stroke-3 p-2 rounded"
+                        )}
+                      >
+                        {route.label === "Cart" ? (
+                          <Button
+                            variant="outline"
+                            className="bg-amber-300  hover:scale-105 active:scale-100 transition-all"
+                          >
+                            <span className="mx-1">{totalOrdered}</span>
+                            <ShoppingCart strokeWidth={1} size={38} />
+                          </Button>
+                        ) : (
+                          <route.icon strokeWidth={1} />
+                        )}
+                        <span className="sr-only">{route.label}</span>
+                      </div>
+                    </Link>
+                  );
+                }
               })}
             </div>
           </div>

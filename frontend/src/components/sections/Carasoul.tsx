@@ -16,6 +16,7 @@ import { ArrowUpRight, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import NoItemFound from "../shared/NoItemFound";
+import { ModalImage } from "../shared/ModalImage";
 
 interface CarasoulProps {
   type: string;
@@ -198,15 +199,17 @@ const Carasoul: React.FC<CarasoulProps> = ({
                   </div>
                   <div
                     className="relative cursor-pointer hover:scale-105 transition-all active:scale-100"
-                    onClick={() => detailsPage(slide._id)}
+                    // onClick={() => detailsPage(slide._id)}
                   >
-                    <Image
-                      src={slide.coverImage}
-                      alt={slide.title}
-                      width={`${type == "mobile" ? 180 : 200}`}
-                      height={`${type == "news" ? 180 : 250}`}
-                      className="rounded-md"
-                    />
+                    <ModalImage type={type} slide={slide}>
+                      <Image
+                        src={slide.coverImage}
+                        alt={slide.title}
+                        width={`${type == "mobile" ? 180 : 200}`}
+                        height={`${type == "news" ? 180 : 250}`}
+                        className="rounded-md"
+                      />
+                    </ModalImage>
                   </div>
                   <div
                     onClick={() => detailsPage(slide._id)}

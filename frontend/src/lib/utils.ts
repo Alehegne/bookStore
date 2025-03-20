@@ -16,6 +16,42 @@ function serializedBookItem(book:book):serializedBook{
     }
 }
 
+export const saveCartToLocalStorage =(state:{cartItems:serializedBook[]})=>{
+    console.log("saving cart to local storage");
+    try {
+        if(typeof window !== "undefined"){
+          const serializedState = JSON.stringify(state);
+          const toBeSaved = serializedState ? serializedState : JSON.stringify({cartItems:[]});
+          localStorage.setItem('cart',toBeSaved);
+        }else{
+          console.log("window is undefined");
+          // return {cartItems:[]}
+        }
+
+      
+    } catch (error) {
+        console.log("Error saving cart to local storage",error);
+        return {cartItems:[]}
+      
+    }
+} 
+
+export const loadCartFromLocalStorage = () => {
+  try{
+      if(typeof window !== "undefined"){
+        const serializedState = localStorage.getItem('cart');
+         if(serializedState){
+          return JSON.parse(serializedState);
+         }
+         return {cartItems:[]}
+    
+      }
+  }catch (error) {
+    console.error("Error loading cart from local storage",error);
+    return {cartItems:[]}
+  }
+}
+
 
 
 export {serializedBookItem} 

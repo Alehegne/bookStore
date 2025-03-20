@@ -91,7 +91,7 @@ export const bookApi = createApi({
         }),
 
          topRated:build.query<book[],{limit:number}>({
-            query:({limit})=>`topRated/${limit}`,
+            query:({limit})=>`topRated?${limit}`,
             transformResponse:(response:{books:book[]})=>response.books,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             transformErrorResponse:(error:{data?:any,status:number})=>({

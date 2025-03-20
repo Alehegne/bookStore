@@ -60,6 +60,17 @@ export type book = {
         createdAt?:Date;
         updatedAt?:Date;
         _id?:string;
+        status:"pending"|"shipped"|"delivered"|"cancelled";
     
 
+    }
+
+    export interface User{
+        userName:string;
+        password:string;
+        email:string;
+        role:"admin"|"user";
+        createdAt:Date;
+        updatedAt:Date;
+        _id:string;
     }

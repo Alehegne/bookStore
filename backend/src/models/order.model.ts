@@ -16,7 +16,7 @@ export interface OrderProps{
     },
     productIds:string[];
     totalPrice:number;
-    //TODO add status, whether it is delivered or not
+    status:"pending"|"shipped"|"delivered"|"cancelled";
     createdAt:Date;
     updatedAt:Date;
     _id:string;
@@ -31,6 +31,12 @@ const Order = new mongoose.Schema({
     email:{
         type:String,
         required:true
+    },
+    status:{
+        // enum:["pending","shipped","delivered","cancelled"],
+        type:String,
+        enum:["pending","shipped","delivered","cancelled"],
+        default:"pending"
     },
     phone:{
         type:String,

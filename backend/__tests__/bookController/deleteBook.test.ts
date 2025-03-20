@@ -4,7 +4,7 @@ import app from "../../src/server";
 import Book from "../../src/models/book.model";
 jest.mock("../src/models/Book"); // Mock the database model
 
-describe.only("DELETE /books/:id", () => {
+describe("DELETE /books/:id", () => {
   it("should return 400 if no ID is provided", async () => {
     const response = await request(app).delete("/books/");
     expect(response.status).toBe(400);

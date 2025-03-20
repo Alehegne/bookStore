@@ -76,6 +76,7 @@ const CheckOutPage = () => {
       },
       productIds: cartItems.map((item) => item?._id),
       totalPrice: totalPrice,
+      status: "pending",
     };
     try {
       // 🔹 Properly await Swal.fire() before checking result

@@ -6,15 +6,18 @@ class OrderController{
 //get all orders by the user
     static async getOrdersByEmail(req:Request,res:Response){
         const {email} = req.params;
-        console.log("email",email)
+        
+        if(!email){
+            res.status(400).json({message:"email is required"})
+        }
 
         try {
-            const orders = await Order.find({email:email});
+            const orders = await Order.find({email:email}).sort({createdAt:-1});
             console.log("orders",orders)
-            res.status(200).json(orders)
+            res.status(200).json(...orders)
             
         } catch (error) {
-            res.status(500).json({message:error})
+            res.status(500).json({message:"internal server error",error:error})
             
         }
 

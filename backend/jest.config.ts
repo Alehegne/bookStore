@@ -9,5 +9,4 @@ module.exports = {
     "^.+\\.(ts|tsx)$": "ts-jest", // Ensures TypeScript files are transformed
   },
   testMatch: ["**/__tests__/**/*.test.ts"],
- 
 };
