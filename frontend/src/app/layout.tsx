@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import NavBar from "@/components/sections/header";
+import "./globals.css";
 
 import "sweetalert2/dist/sweetalert2.js";
 import { AuthProvider } from "./context/AuthContext";
@@ -20,11 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
         <AuthProvider>
-          <ReduxStateProvider>
-            {" "}
-            <NavBar />
-            {children}
-          </ReduxStateProvider>
+          <ReduxStateProvider> {children}</ReduxStateProvider>
         </AuthProvider>
       </body>
     </html>

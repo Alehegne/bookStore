@@ -2,14 +2,24 @@ import mongoose, { Document, Schema } from "mongoose"
 import bcrypt from "bcryptjs";
 import {formatDistanceToNow}  from "date-fns";
 
+export type IUserType = {
+    userName:string,
+    password:string,
+    email:string,
+    role:string,
+    createdAt?:Date,
+    updatedAt?:Date,
+    _id?:string,
+}
+
 //lets create easy and separeted interfaces for the user model
 export interface IUser extends Document{
     userName:string,
     password:string,
     email:string,
     role:string,
-    createdAt:Date,
-    updatedAt:Date,
+    createdAt?:Date,
+    updatedAt?:Date,
     _id:string,
 }
 export interface IUserMethods {
@@ -93,7 +103,8 @@ UserSchema.virtual("fullName").get(function(){
 })
 //virtuals to get the time since the user was created
 UserSchema.virtual("createdAtDistance").get(function(){
-    return formatDistanceToNow(this.createdAt,{addSuffix:true});
+    const date:Date = new Date(this.createdAt!);
+    return formatDistanceToNow(new Date(date),{addSuffix:true});
 })
 //statics methods: allow to create methods that can be called on the model itself
 // UserSchema.statics.findByEmailOrUserName = async function(emailOrUserName:string):Promise<IUser | null>{

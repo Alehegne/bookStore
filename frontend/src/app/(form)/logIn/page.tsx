@@ -63,23 +63,6 @@ const Page = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 w-[400px] bg-white p-4 rounded-md shadow-2xl"
         >
-          {/* <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border-none  bg-gray-50 ring-0 focus:outline-hidden "
-                    placeholder="user name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
           <FormField
             control={form.control}
             name="email"

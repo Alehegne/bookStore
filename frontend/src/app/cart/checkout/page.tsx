@@ -94,7 +94,15 @@ const CheckOutPage = () => {
         // 🔹 Log newOrder before calling createOrder()
         console.log("New Order:", newOrder);
 
-        await createOrder({ order: newOrder }); // 🔹 Catch errors inside createOrder
+        await createOrder({ order: newOrder }) // 🔹 Catch errors inside createOrder
+          .unwrap()
+          .then((data) => {
+            console.log("Order created successfully:", data);
+          })
+          .catch((error) => {
+            console.error("Error creating order:", error);
+            Swal.fire("Order failed!", "Something went wrong", "error");
+          });
         console.log("Order successfully created");
 
         await Swal.fire("Successfully placed!", "", "success");

@@ -1,5 +1,4 @@
-import { NextFunction } from "express";
-import { Request, Response } from "express";
+import { Request, Response,NextFunction, response } from "express";
 
 
 interface UserPayload {
@@ -7,6 +6,8 @@ interface UserPayload {
     userName:string,
     role:string,
     email:string,
+    iat:number,
+    exp:number,
 }
 //declare global { , for extending the express request object
 declare global {
@@ -16,43 +17,52 @@ declare global {
         }
     }
 }
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 
 
-export const verifyAdminToken = (req:Request,res:Response,next:NextFunction) => {
+export const verifyAdminToken = (req:Request,res:Response,next:NextFunction):void => {
+   
     const token = req.headers.authorization?.split(" ")[1];
-
-    if(!token){
-        return res.status(401).json({message:"unauthorized"});
+    if(!token){ 
+        console.log("no token provided")
+         res.status(401).json({message:"no token provided"});
+         
+         return;
     }
     try {
 
-        if(!process.env.JWT_SECRET)
-            return res.status(500).json({message:"internal server error, no secret key"});
+        if(!process.env.JWT_SECRET){
+            console.log("no secret key")
+             res.status(500).json({message:"internal server error, no secret key"});
+            return;}
 
 
-         const decoded = jwt.verify(token,process.env.JWT_SECRET) as UserPayload;
+         const decoded = jwt.verify(token!,process.env.JWT_SECRET as Secret) as JwtPayload;
+         console.log("decoded",decoded);
             if(!decoded){
-                return res.status(401).json({message:"invalid token"});
+                 console.log("invalid token")
+                 res.status(401).json({message:"invalid token"});
+                 return;
             }
             //check if the user is an admin
-            if(decoded && decoded.role !== "admin")
-                return res.status(403).json({message:"forbidden"});
+            if(decoded && decoded.role !== "admin"){
+                console.log("unauthorized, not admin")
+                 res.status(403).json({message:"forbidden"});
+                return;}
 
-            if(decoded){
-                req.user = decoded as any;
-                res.status(200).json({message:"success",user:decoded});
-                next();
-            }
-
-         
-         
-       
-
-        
+            console.log("logging admin...")
+            req.user = decoded as any;
+            next();
+  
     } catch (error) {
-        return res.status(401).json({message:"error verifying token"});
-        
+         
+         if(error instanceof jwt.TokenExpiredError){
+            console.log("token expired")
+             res.status(401).json({message:"token expired"});
+             return;
+         }
+         console.log("error verifying token")
+         res.status(401).json({message:"error verifying token"});
     }
 
 }

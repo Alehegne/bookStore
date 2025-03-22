@@ -1,4 +1,4 @@
-
+import bcrypt from "bcryptjs";
 
 export async function validatePosts(data:Record<string,any>){
     const requiredFields = ["title","description","coverImage","author","rating","release","genre","pages","newPrice","oldPrice","publishedAt"];
@@ -9,4 +9,11 @@ export async function validatePosts(data:Record<string,any>){
         }
     }
     return {status:200,message:"Valid request"};
+}
+
+export async function hashPassword(password:string){
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+
 }

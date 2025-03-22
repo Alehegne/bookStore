@@ -7,6 +7,7 @@ import multer from "multer";
 import Book, { BookProps } from "../../models/book.model";
 import { validatePosts } from "../../lib/utils";
 import BookController from "./book.controller";
+import { verifyAdminToken } from "../../middleware/verifyAdmin";
 const bookRouter = Router();
 const upload = multer();//multer config
 //get all books, with pagination and with a limit of 20 books per page
@@ -27,9 +28,9 @@ bookRouter.get("/statistics",BookController.statistics);
 //get Top rated books //TODO: add pagination
 bookRouter.get("/topRated",BookController.topRatedBooks);
 bookRouter.get("/:id",BookController.getBookById);
-bookRouter.post("/create",upload.none(),BookController.postBook);
-bookRouter.put("/update/:id",upload.none(),BookController.updateBook);
-bookRouter.delete("/delete/:id",BookController.deleteBook);
+bookRouter.post("/create",upload.none(),verifyAdminToken,BookController.postBook);
+bookRouter.put("/update/:id",upload.none(),verifyAdminToken,BookController.updateBook);
+bookRouter.delete("/delete/:id",verifyAdminToken,BookController.deleteBook);
 bookRouter.get("/category/:category",BookController.getBooksByCategory);
 
 export {bookRouter}

@@ -11,7 +11,7 @@ const upload = multer();
 
 
 userRouter.get("/",UserController.getAllUsers);
-userRouter.post("/admin",verifyAdminToken,upload.none(), UserController.adminLogIn);
+userRouter.post("/admin",upload.none(), UserController.adminLogIn);
 
 
 

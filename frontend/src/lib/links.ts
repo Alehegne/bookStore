@@ -3,7 +3,7 @@
 export const profileLinks =[
     {
         name:"Dashboard",
-        link:"/dashboard"
+        link:"/admin"
     },
     {
         name:"Orders",

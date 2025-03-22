@@ -6,47 +6,53 @@ import jwt from "jsonwebtoken";
 class UserController {
     // This is a placeholder for the UserController class
 
-    static async adminLogIn(req:Request, res:Response) {
+    static async adminLogIn(req:Request, res:Response):Promise<void> {
         const {userName,password} = req.body;
         console.log("body",req.body);
         if(!userName || !password){
+            console.log("error in admin login, please provide username and password");
              res.status(400).json({message:"please provide username and password"});
-            
+             return;
         }
         try {
             const admin:IUser | null = await User.findOne({userName:userName});
             if(!admin){
-            
-                 res.status(404).json({message:"user not found"});
+            console.log("error in admin login, admin not found");
+
+                 res.status(404).json({message:"admin not found"});
+                    return;
             }
             const isMatch = await bcrypt.compare(password as string,admin?.password as string);
             if(!isMatch){
+                console.log("error in admin login, password is incorrect");
                  res.status(401).json({message:"invalid credentials,incorrect password"});
+             return;
+
             }
-            // var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256' });
-    //         //create a token
+            
             const token = jwt.sign(
                 {id:admin?._id,userName:admin?.userName,role:admin?.role},
                 process.env.JWT_SECRET as string,
-                {expiresIn:'1h'}
+                {expiresIn:'2h'}
             );
             if(!token){
-                // return res.status(500).json({message:"error creating token"})
+                console.log("error in admin login, token not created");
+             res.status(500).json({message:"error creating token"})
+             return;
+
             }
              res.status(200).json({
                 message: "Authentication successful",
                 token: token,
-                user: {
-                    username: admin?.userName,
-                    role: admin?.role
-                }
             })
-
+          console.log("admin login success");
 
             
         } catch (error) {
              console.log("error in admin router")
-             res.status(500).json({message:"internal server error"})
+             res.status(500).json({message:"internal server error at admin route"})
+             return;
+
         }
     }
 
@@ -72,6 +78,7 @@ class UserController {
     };
     static getAllUsers(req:Request, res:Response) {
         // Logic to get all users
+       
        res.json({message:"users returned"});
     };
     static getUserByRole(req:Request, res:Response) {
