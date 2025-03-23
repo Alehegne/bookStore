@@ -22,7 +22,7 @@ const Recommended = () => {
     //serialize the book object to store in the redux store;since redux store does not support date objects
     const serializedState: serializedBook = serializedBookItem(book);
     dispatch(addToCart(serializedState));
-    console.log("added to cart", book);
+    // console.log("added to cart", book);
   };
 
   return (

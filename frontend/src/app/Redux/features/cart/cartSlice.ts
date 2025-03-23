@@ -17,13 +17,13 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state,action:PayloadAction<serializedBook>)=>{
-        console.log("state cart items",state.cartItems);
-        console.log("action payload",action.payload);
+        // console.log("state cart items",state.cartItems);
+        // console.log("action payload",action.payload);
         const existingItem = state.cartItems.find((item)=>{
            return  item._id === action.payload._id
         });
-        console.log("existing item",existingItem);
-        console.log("now action payload",action.payload);
+        // console.log("existing item",existingItem);
+        // console.log("now action payload",action.payload);
         const itemTitle = action.payload.title;
         
         if(!existingItem){

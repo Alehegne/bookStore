@@ -38,7 +38,7 @@ export default function NavBar() {
       (state: RootState) => state.cart.cartItems as serializedBook[]
     ) || [];
 
-  console.log("cartItems in navbar", cartItems);
+  // console.log("cartItems in navbar", cartItems);
   useEffect(() => {
     settotalOrdered(cartItems.length);
   }, [cartItems.length]);

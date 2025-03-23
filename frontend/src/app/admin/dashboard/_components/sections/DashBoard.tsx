@@ -1,11 +1,11 @@
 "use client";
 import { Book, BookCopy, BookOpen, Users } from "lucide-react";
 import React from "react";
-import Card from "./Card";
+import Card from "../Card";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import BooksByCategoryOrYear from "./BooksByCategoryOrYear";
-import RecentActivity from "./RecentActivity";
+import BooksByCategoryOrYear from "../BooksByCategoryOrYear";
+import RecentActivity from "../RecentActivity";
 
 const DashBoard = () => {
   const router = useRouter();

@@ -22,7 +22,8 @@ const TopSellers = () => {
   );
   //fetch books from the redux store
   const { data, isLoading, isError } = useGetBooksQuery({ page: 1, limit: 35 });
-  console.log("data now", data);
+  //to get the data from the response
+  // console.log("data now", data);
   const addToFavorites = (book: book) => {
     //serialize the book object to store in the redux store;since redux store does not support date objects
     const serializedState: serializedBook = serializedBookItem(book);
@@ -32,21 +33,21 @@ const TopSellers = () => {
     //serialize the book object to store in the redux store;since redux store does not support date objects
     const serializedState: serializedBook = serializedBookItem(book);
     dispatch(addToCart(serializedState));
-    console.log("added to cart", book);
+    // console.log("added to cart", book);
   };
 
   //filtered by category
   useEffect(() => {
     if (currentItem === "All") {
-      setFilteredBook(data || undefined);
+      setFilteredBook(data?.books || undefined);
     } else {
       setFilteredBook(() => {
-        const filtered = data?.filter((deta) =>
-          deta.genre.map(
+        const filtered = data?.books.filter((deta) =>
+          deta?.genre.map(
             (genre) => genre.toLowerCase() == currentItem.toLowerCase()
           )
         );
-        console.log("filtered", filtered);
+        // console.log("filtered", filtered);
         return filtered || undefined;
       });
     }

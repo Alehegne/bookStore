@@ -43,9 +43,9 @@ const RelatedBooks: React.FC<RelatedBooksProps> = ({
 
   const filteredBooksSameAuthor = useCallback(() => {
     if (data) {
-      console.log("inside the filter author");
-      console.log("data", data);
-      console.log("currentBookId", currentBookId);
+      // console.log("inside the filter author");
+      // console.log("data", data);
+      // console.log("currentBookId", currentBookId);
 
       return data.filter((book) => book._id !== currentBookId);
     }
@@ -56,8 +56,8 @@ const RelatedBooks: React.FC<RelatedBooksProps> = ({
       return relatedBooks.books.filter((book) => book._id !== currentBookId);
     }
   }, [relatedBooks, currentBookId]);
-  console.log("filteredBooksSameAuthor", filteredBooksSameAuthor());
-  console.log("filteredBooksSameCategories", filteredBooksSameCategories());
+  // console.log("filteredBooksSameAuthor", filteredBooksSameAuthor());
+  // console.log("filteredBooksSameCategories", filteredBooksSameCategories());
   // useEffect(() => {
   //   const filteredBooksSameAuthor = () => {
   //     if (data) {

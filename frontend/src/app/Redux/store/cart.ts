@@ -29,8 +29,8 @@ export const store = configureStore({
 })
 
 store.subscribe(()=>{//set state to local storage,whenever the state changes
-  console.log("state changed");
-  console.log("state",store.getState());
+  // console.log("state changed");
+  // console.log("state",store.getState());
   saveCartToLocalStorage({cartItems:store.getState().cart.cartItems});
 })
 

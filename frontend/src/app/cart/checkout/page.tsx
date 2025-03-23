@@ -62,7 +62,7 @@ const CheckOutPage = () => {
   async function onSubmit(values: z.infer<typeof CheckOutSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log("values", values);
+    // console.log("values", values);
     const newOrder = {
       name: values.fullName,
       email: values.email,
@@ -92,7 +92,7 @@ const CheckOutPage = () => {
         console.log("Order Confirmation received"); // ✅ Debugging log
 
         // 🔹 Log newOrder before calling createOrder()
-        console.log("New Order:", newOrder);
+        // console.log("New Order:", newOrder);
 
         await createOrder({ order: newOrder }) // 🔹 Catch errors inside createOrder
           .unwrap()

@@ -1,19 +1,34 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import baseQuery from './baseQuery';
 import { book, Statistics } from '@/types/types';
+import { current } from '@reduxjs/toolkit';
 
-
+interface analysis {
+  totalBooks:number,
+  totalPages:number,
+  currentPage:number,
+  hasNextPage:boolean,
+  hasPreviousPage:boolean,
+}
+interface bookResponse {
+  books:book[],
+  analysis:analysis
+}
 
 export const bookApi = createApi({
     reducerPath: "bookApi",//name of the slice
     baseQuery: fetchBaseQuery({baseUrl: baseQuery()}),
     tagTypes: ["Book"], //
     endpoints: (build) => ({
-      getBooks: build.query<book[],{page:number,limit:number}>({
+      getBooks: build.query<bookResponse,{page:number,limit:number}>({
         query: ({page=1,limit=5}) => `?page=${page}&limit=${limit}`,
         transformResponse: (response:{
-            books:book[]
-        }) => response.books,
+            books:book[],
+            analysis:analysis
+        }) =>({
+            books:response.books,
+            analysis:response.analysis
+        }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         transformErrorResponse: (error:{data?:any,status:number}) => (
             {
@@ -70,7 +85,7 @@ export const bookApi = createApi({
         query:({id})=>({
           url:`delete/${id}`,
         }),
-
+       
         invalidatesTags:["Book"]
       }),
       fetchBookByCategory:build.query<{books:book[],total:number,message:string},{category:string[]}>({

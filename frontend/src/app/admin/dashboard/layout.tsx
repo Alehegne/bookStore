@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex gap-5 h-screen w-full bg-gray-100">
+    <div className="flex gap-5 h-full w-full bg-gray-100">
       <SideBar />
       <MobileAdminSideBar />
 

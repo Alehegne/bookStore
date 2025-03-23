@@ -10,13 +10,13 @@ import Loading from "@/components/shared/loading";
 
 const Orders = () => {
   const { user } = useAuth();
-  console.log("user in Orders", user);
+  // console.log("user in Orders", user);
 
   const { data, isLoading, isError } = useGetOrdersByEmailQuery({
     email: user?.email,
   });
 
-  console.log("orderedItem", data);
+  // console.log("orderedItem", data);
   if (isLoading) {
     return <Loading />;
   }

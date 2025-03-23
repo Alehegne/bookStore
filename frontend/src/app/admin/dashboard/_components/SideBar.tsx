@@ -10,7 +10,7 @@ const SideBar = () => {
   const routes = useAdminRoutes();
 
   return (
-    <aside className="hidden top-0 sm:flex left-0 relative md:w-1/5  h-screen bg-gray-100 shadow-lg">
+    <aside className="hidden top-0 sm:flex left-0  md:w-1/5 relative  h-screen bg-gray-100 shadow-lg">
       <div className="w-full flex flex-col mb-10">
         <div className="flex gap-2  flex-col items-center mt-8 mb-8 justify-center ">
           <BookOpen width={62} height={62} />
@@ -44,7 +44,7 @@ const SideBar = () => {
           ))}
         </ul>
       </div>
-      <div className="absolute top-0 left-[300px] z-[999] ">
+      <div className="absolute top-0 left-[300px] bg-gray-100 z-[999] py-1 px-2">
         <AdminBread />
       </div>
     </aside>

@@ -16,7 +16,7 @@ const News = () => {
           cart={() => {}}
           favorite={() => {}}
           type="news"
-          slides={data}
+          slides={data?.books}
           navigation={true}
           pagination={true}
           loop={true}

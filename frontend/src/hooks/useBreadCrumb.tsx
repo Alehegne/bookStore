@@ -13,8 +13,6 @@ const useBreadCrumb = () => {
   });
   return {
     breadCrumb,
-    pathArray,
-    path,
   };
 };
 

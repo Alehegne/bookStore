@@ -13,7 +13,19 @@ class BookController {
                 const pageNumber = req.query.page ? parseInt(req.query.page as string) : 1;
                 const skip = (pageNumber-1)*limit;
                 const books = await Book.find().limit(limit).skip(skip).sort({createdAt:-1});
-                res.status(200).json({message:"Books fetched successfully",books});    
+                const totalBooks = await Book.countDocuments();
+                const totalPages = Math.ceil(totalBooks/limit);
+                const currentPage = pageNumber;
+                const hasNextPage = currentPage < totalPages;
+                const hasPreviousPage = currentPage > 1;
+                const analysis = {
+                    totalBooks,
+                    totalPages,
+                    currentPage,
+                    hasNextPage,
+                    hasPreviousPage
+                }
+                res.status(200).json({message:"Books fetched successfully",books,analysis});    
             } catch (error) {
                 console.log(error);
                 res.status(500).json({message:"Internal server error",error:error});

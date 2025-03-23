@@ -38,7 +38,7 @@ const Cart = () => {
     return <Loading message="Loading your cart" />;
   }
 
-  console.log("cartItems in cart", cartItems);
+  // console.log("cartItems in cart", cartItems);
   return (
     <div className="bg-gray-100 min-h-screen w-full">
       <AnimatePresence>

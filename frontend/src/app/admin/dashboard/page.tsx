@@ -7,7 +7,7 @@ import { isTokenExpired as isExpired } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import Swal from "sweetalert2";
-import DashBoard from "./_components/DashBoard";
+import DashBoard from "./_components/sections/DashBoard";
 
 interface UserInfo {
   userName: string;

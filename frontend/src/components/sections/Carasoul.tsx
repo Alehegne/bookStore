@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 // Import required modules
-import { Navigation, Mousewheel, Keyboard } from "swiper/modules";
+import { Navigation, Keyboard } from "swiper/modules";
 import { book } from "@/types/types";
 import Image from "next/image";
 import { ArrowUpRight, Heart } from "lucide-react";
@@ -51,6 +51,8 @@ const Carasoul: React.FC<CarasoulProps> = ({
   const [sliderPerView, setSliderPerView] = useState<number | undefined>(
     undefined
   );
+  // console.log("slides in Carasoul now", slides);
+  // console.log("in type in Carasoul now", type);
   const router = useRouter();
   useEffect(() => {
     const innerWidth = window.innerWidth;
@@ -100,10 +102,10 @@ const Carasoul: React.FC<CarasoulProps> = ({
   };
 
   // console.log("slides now", slides);
-  console.log(
-    "genre now",
-    slides?.map((slide) => slide.genre)
-  );
+  // console.log(
+  //   "genre now",
+  //   slides?.map((slide) => slide.genre)
+  // );
 
   // show the slides if the slides are fetched and not loading
   return slides && sliderPerView && !isError && !isLoading ? (

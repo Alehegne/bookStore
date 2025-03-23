@@ -18,7 +18,7 @@ function serializedBookItem(book:book):serializedBook{
 }
 
 export const saveCartToLocalStorage =(state:{cartItems:serializedBook[]})=>{
-    console.log("saving cart to local storage");
+    // console.log("saving cart to local storage");
     try {
         if(typeof window !== "undefined"){
           const serializedState = JSON.stringify(state);
@@ -56,7 +56,7 @@ export const loadCartFromLocalStorage = () => {
 export const decodeJwt = (token:string) => {
   try {
     const decoded = jwtDecode(token);
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
     return decoded;
     
   } catch (error) {
